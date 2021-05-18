@@ -92,7 +92,7 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
     if (datePicked != null) {
       setState(() {
         _selectedDate = datePicked;
-        _dateField.text = DateFormat("yyyy-MM-dd hh:mm").format(_selectedDate);
+        _dateField.text = DateFormat("yyyy-MM-dd").format(_selectedDate);
       });
     }
   }
