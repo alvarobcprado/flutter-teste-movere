@@ -24,11 +24,14 @@ class VendaListWidget extends StatefulWidget {
 class _VendaListWidgetState extends State<VendaListWidget> {
   @override
   Widget build(BuildContext context) {
-    return DataTable(
-        sortAscending: widget.ascendingFilterControl,
-        sortColumnIndex: widget.indexFilterControl,
-        columns: _buildDataColumns(),
-        rows: _buildDataRows(widget.streamSnapshot.data));
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      child: DataTable(
+          sortAscending: widget.ascendingFilterControl,
+          sortColumnIndex: widget.indexFilterControl,
+          columns: _buildDataColumns(),
+          rows: _buildDataRows(widget.streamSnapshot.data)),
+    );
 
     // return ListView.separated(
     //   itemCount: widget.streamSnapshot.data.docs.length,
