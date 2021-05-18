@@ -21,12 +21,14 @@ class _HomePageState extends State<HomePage> {
   bool isMoneyAscending = false;
   bool isNameAscending = true;
   bool ascendingControl = true;
+  int indexControl = 0;
 
   void appFilterMoney() {
     if (isMoneyAscending) {
       setState(() {
+        indexControl = 2;
         isMoneyAscending = !isMoneyAscending;
-        ascendingControl = isNameAscending;
+        ascendingControl = isMoneyAscending;
         _vendas = FirebaseFirestore.instance
             .collection('vendas')
             .orderBy('valorVenda', descending: true)
@@ -34,8 +36,9 @@ class _HomePageState extends State<HomePage> {
       });
     } else {
       setState(() {
+        indexControl = 2;
         isMoneyAscending = !isMoneyAscending;
-        ascendingControl = isNameAscending;
+        ascendingControl = isMoneyAscending;
         _vendas = FirebaseFirestore.instance
             .collection('vendas')
             .orderBy('valorVenda')
@@ -47,6 +50,7 @@ class _HomePageState extends State<HomePage> {
   void appFilterName() {
     if (isNameAscending) {
       setState(() {
+        indexControl = 0;
         isNameAscending = !isNameAscending;
         ascendingControl = isNameAscending;
         _vendas = FirebaseFirestore.instance
@@ -56,6 +60,7 @@ class _HomePageState extends State<HomePage> {
       });
     } else {
       setState(() {
+        indexControl = 0;
         isNameAscending = !isNameAscending;
         ascendingControl = isNameAscending;
         _vendas = FirebaseFirestore.instance
@@ -105,6 +110,7 @@ class _HomePageState extends State<HomePage> {
                     filterName: appFilterName,
                     filterMoney: appFilterMoney,
                     ascendingFilterControl: ascendingControl,
+                    indexFilterControl: indexControl,
                   );
                 } else {
                   return VendaVaziaWidget();

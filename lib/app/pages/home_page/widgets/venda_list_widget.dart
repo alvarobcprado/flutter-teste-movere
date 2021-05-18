@@ -9,21 +9,24 @@ class VendaListWidget extends StatefulWidget {
     @required this.filterName,
     @required this.filterMoney,
     @required this.ascendingFilterControl,
+    @required this.indexFilterControl,
   }) : super(key: key);
   final AsyncSnapshot streamSnapshot;
   final VoidCallback filterName;
   final VoidCallback filterMoney;
   final bool ascendingFilterControl;
+  final int indexFilterControl;
 
   @override
   _VendaListWidgetState createState() => _VendaListWidgetState();
 }
 
 class _VendaListWidgetState extends State<VendaListWidget> {
-  int columnIndexFilterControl;
   @override
   Widget build(BuildContext context) {
     return DataTable(
+        sortAscending: widget.ascendingFilterControl,
+        sortColumnIndex: widget.indexFilterControl,
         columns: _buildDataColumns(),
         rows: _buildDataRows(widget.streamSnapshot.data));
 
@@ -55,7 +58,7 @@ class _VendaListWidgetState extends State<VendaListWidget> {
     return <DataColumn>[
       DataColumn(
         label: Text('Nome do cliente'),
-        onSort: (_, __) {
+        onSort: (index, __) {
           widget.filterName();
         },
       ),
@@ -63,7 +66,7 @@ class _VendaListWidgetState extends State<VendaListWidget> {
       DataColumn(
         label: Text('Valor da venda'),
         numeric: true,
-        onSort: (_, __) {
+        onSort: (index, __) {
           widget.filterMoney();
         },
       ),
