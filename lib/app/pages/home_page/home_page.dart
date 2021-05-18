@@ -18,22 +18,52 @@ class _HomePageState extends State<HomePage> {
       .orderBy('nomeCliente')
       .snapshots();
 
-  void _appFilterMoney() {
-    setState(() {
-      _vendas = FirebaseFirestore.instance
-          .collection('vendas')
-          .orderBy('valorVenda')
-          .snapshots();
-    });
+  bool isMoneyAscending = false;
+  bool isNameAscending = true;
+  bool ascendingControl = true;
+
+  void appFilterMoney() {
+    if (isMoneyAscending) {
+      setState(() {
+        isMoneyAscending = !isMoneyAscending;
+        ascendingControl = isNameAscending;
+        _vendas = FirebaseFirestore.instance
+            .collection('vendas')
+            .orderBy('valorVenda', descending: true)
+            .snapshots();
+      });
+    } else {
+      setState(() {
+        isMoneyAscending = !isMoneyAscending;
+        ascendingControl = isNameAscending;
+        _vendas = FirebaseFirestore.instance
+            .collection('vendas')
+            .orderBy('valorVenda')
+            .snapshots();
+      });
+    }
   }
 
-  void _appFilterName() {
-    setState(() {
-      _vendas = FirebaseFirestore.instance
-          .collection('vendas')
-          .orderBy('nomeCliente')
-          .snapshots();
-    });
+  void appFilterName() {
+    if (isNameAscending) {
+      setState(() {
+        isNameAscending = !isNameAscending;
+        ascendingControl = isNameAscending;
+        _vendas = FirebaseFirestore.instance
+            .collection('vendas')
+            .orderBy('nomeCliente', descending: true)
+            .snapshots();
+      });
+    } else {
+      setState(() {
+        isNameAscending = !isNameAscending;
+        ascendingControl = isNameAscending;
+        _vendas = FirebaseFirestore.instance
+            .collection('vendas')
+            .orderBy('nomeCliente')
+            .snapshots();
+      });
+    }
   }
 
   @override
@@ -42,16 +72,16 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Movere Software'),
         centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: _appFilterMoney,
-            icon: Icon(Icons.monetization_on),
-          ),
-          IconButton(
-            onPressed: _appFilterName,
-            icon: Icon(Icons.sort_by_alpha),
-          )
-        ],
+        // actions: [
+        //   IconButton(
+        //     onPressed: _appFilterMoney,
+        //     icon: Icon(Icons.monetization_on),
+        //   ),
+        //   IconButton(
+        //     onPressed: _appFilterName,
+        //     icon: Icon(Icons.sort_by_alpha),
+        //   )
+        // ],
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -72,6 +102,9 @@ class _HomePageState extends State<HomePage> {
                 if (streamSnapshot.hasData) {
                   return VendaListWidget(
                     streamSnapshot: streamSnapshot,
+                    filterName: appFilterName,
+                    filterMoney: appFilterMoney,
+                    ascendingFilterControl: ascendingControl,
                   );
                 } else {
                   return VendaVaziaWidget();
