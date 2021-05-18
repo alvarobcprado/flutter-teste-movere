@@ -10,7 +10,10 @@ class Vendas {
   DateTime dataVenda;
 
   Vendas(
-      {this.docID, @required this.nomeCliente, @required this.valorVenda, data})
+      {this.docID,
+      @required this.nomeCliente,
+      @required this.valorVenda,
+      DateTime data})
       : this.dataVenda = data ?? DateTime.now();
 
   Map<String, dynamic> toMap() {

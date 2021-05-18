@@ -12,8 +12,18 @@ class VendaFormWidget extends StatefulWidget {
 }
 
 class _VendaFormWidgetState extends State<VendaFormWidget> {
-  final TextEditingController nomeField = TextEditingController();
-  final TextEditingController valorField = TextEditingController();
+  final TextEditingController _nomeField = TextEditingController();
+  final TextEditingController _valorField = TextEditingController();
+  final TextEditingController _dateField = TextEditingController();
+  DateTime _selectedDate;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = DateTime.now();
+    _dateField.text = DateFormat("yyyy-MM-dd").format(_selectedDate);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -22,6 +32,8 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
           _buildNameField(),
           SizedBox(height: 10),
           _buildValorField(),
+          SizedBox(height: 10),
+          _buildDataField(),
           SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -38,7 +50,7 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
   Widget _buildNameField() {
     return TextFormField(
       textCapitalization: TextCapitalization.sentences,
-      controller: nomeField,
+      controller: _nomeField,
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
@@ -49,7 +61,7 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
 
   Widget _buildValorField() {
     return TextFormField(
-      controller: valorField,
+      controller: _valorField,
       keyboardType: TextInputType.number,
       decoration: InputDecoration(
         border: OutlineInputBorder(),
@@ -58,10 +70,37 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
     );
   }
 
+  Widget _buildDataField() {
+    return TextFormField(
+      controller: _dateField,
+      readOnly: true,
+      onTap: () => _selectDate(context),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        labelText: 'Data da venda',
+      ),
+    );
+  }
+
+  _selectDate(BuildContext context) async {
+    final DateTime datePicked = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2020),
+      lastDate: DateTime.now(),
+    );
+    if (datePicked != null) {
+      setState(() {
+        _selectedDate = datePicked;
+        _dateField.text = DateFormat("yyyy-MM-dd hh:mm").format(_selectedDate);
+      });
+    }
+  }
+
   Widget _buildOkButton() {
-    if (nomeField.text.isEmpty ||
-        valorField.text.isEmpty ||
-        double.tryParse(valorField.text).isNaN) {}
+    if (_nomeField.text.isEmpty ||
+        _valorField.text.isEmpty ||
+        double.tryParse(_valorField.text).isNaN) {}
     return TextButton(
       onPressed: onSavePressed,
       child: Text('Adicionar'),
@@ -69,7 +108,6 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
   }
 
   Widget _buildQuitButton() {
-    if (nomeField.text.isEmpty || valorField.text.isEmpty) {}
     return TextButton(
       onPressed: () {
         Navigator.pop(context);
@@ -79,10 +117,11 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
   }
 
   void onSavePressed() {
-    if (nomeField.text.isNotEmpty && valorField.text.isNotEmpty) {
+    if (_nomeField.text.isNotEmpty && _valorField.text.isNotEmpty) {
       final venda = Vendas(
-        nomeCliente: toBeginningOfSentenceCase(nomeField.text),
-        valorVenda: double.parse(valorField.text),
+        nomeCliente: toBeginningOfSentenceCase(_nomeField.text),
+        valorVenda: double.parse(_valorField.text),
+        data: _selectedDate,
       );
       FirebaseApi.addVenda(venda);
       Navigator.pop(context);

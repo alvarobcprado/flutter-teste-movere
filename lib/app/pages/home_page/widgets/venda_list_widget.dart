@@ -26,11 +26,18 @@ class _VendaListWidgetState extends State<VendaListWidget> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      child: DataTable(
-          sortAscending: widget.ascendingFilterControl,
-          sortColumnIndex: widget.indexFilterControl,
-          columns: _buildDataColumns(),
-          rows: _buildDataRows(widget.streamSnapshot.data)),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+              headingRowHeight: 50,
+              sortAscending: widget.ascendingFilterControl,
+              sortColumnIndex: widget.indexFilterControl,
+              columns: _buildDataColumns(),
+              rows: _buildDataRows(widget.streamSnapshot.data)),
+        ),
+      ),
     );
 
     // return ListView.separated(
@@ -67,7 +74,7 @@ class _VendaListWidgetState extends State<VendaListWidget> {
       ),
       DataColumn(label: Text('Data da venda')),
       DataColumn(
-        label: Text('Valor da venda'),
+        label: Text('Valor da venda (R\$)'),
         numeric: true,
         onSort: (index, __) {
           widget.filterMoney();
@@ -95,7 +102,12 @@ class _VendaListWidgetState extends State<VendaListWidget> {
           ),
         ),
       ),
-      DataCell(Text("${documentSnapshot['valorVenda']}"))
+      DataCell(
+        Text(
+          NumberFormat.currency(locale: "pt_BR", symbol: '')
+              .format(documentSnapshot['valorVenda']),
+        ),
+      ),
     ];
   }
 }
