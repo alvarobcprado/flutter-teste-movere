@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:movere_app/app/api/firebase_api.dart';
 import 'package:movere_app/app/models/Vendas.dart';
+import 'package:intl/intl.dart';
 
 class VendaFormWidget extends StatefulWidget {
   const VendaFormWidget({Key key}) : super(key: key);
@@ -35,6 +37,7 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
 
   Widget _buildNameField() {
     return TextFormField(
+      textCapitalization: TextCapitalization.sentences,
       controller: nomeField,
       keyboardType: TextInputType.name,
       decoration: InputDecoration(
@@ -76,7 +79,7 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
   void onSavePressed() {
     if (nomeField.text.isNotEmpty && valorField.text.isNotEmpty) {
       final venda = Vendas(
-        nomeCliente: nomeField.text,
+        nomeCliente: toBeginningOfSentenceCase(nomeField.text),
         valorVenda: double.parse(valorField.text),
       );
       FirebaseApi.addVenda(venda);
