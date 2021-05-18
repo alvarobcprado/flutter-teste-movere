@@ -59,7 +59,9 @@ class _VendaFormWidgetState extends State<VendaFormWidget> {
   }
 
   Widget _buildOkButton() {
-    if (nomeField.text.isEmpty || valorField.text.isEmpty) {}
+    if (nomeField.text.isEmpty ||
+        valorField.text.isEmpty ||
+        double.tryParse(valorField.text).isNaN) {}
     return TextButton(
       onPressed: onSavePressed,
       child: Text('Adicionar'),
