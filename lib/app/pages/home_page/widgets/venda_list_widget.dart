@@ -24,12 +24,13 @@ class VendaListWidget extends StatefulWidget {
 class _VendaListWidgetState extends State<VendaListWidget> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: ConstrainedBox(
+        constraints:
+            BoxConstraints.expand(width: MediaQuery.of(context).size.width),
         child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
+          scrollDirection: Axis.vertical,
           child: DataTable(
               headingRowHeight: 50,
               sortAscending: widget.ascendingFilterControl,
@@ -74,7 +75,7 @@ class _VendaListWidgetState extends State<VendaListWidget> {
       ),
       DataColumn(label: Text('Data da venda')),
       DataColumn(
-        label: Text('Valor da venda (R\$)'),
+        label: Text('Valor da venda'),
         numeric: true,
         onSort: (index, __) {
           widget.filterMoney();
@@ -104,7 +105,7 @@ class _VendaListWidgetState extends State<VendaListWidget> {
       ),
       DataCell(
         Text(
-          NumberFormat.currency(locale: "pt_BR", symbol: '')
+          NumberFormat.currency(locale: "pt_BR", symbol: 'R\$')
               .format(documentSnapshot['valorVenda']),
         ),
       ),
