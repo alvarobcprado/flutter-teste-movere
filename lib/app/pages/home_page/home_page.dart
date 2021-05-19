@@ -83,14 +83,23 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => showDialog(
+              context: context,
+              builder: (context) => AddVendaWidget(),
+            ),
+          )
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () => showDialog(
-          context: context,
-          builder: (context) => AddVendaWidget(),
-        ),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   child: Icon(Icons.add),
+      //   onPressed: () => showDialog(
+      //     context: context,
+      //     builder: (context) => AddVendaWidget(),
+      //   ),
+      // ),
       body: StreamBuilder(
           stream: _vendas,
           builder: (context, streamSnapshot) {
