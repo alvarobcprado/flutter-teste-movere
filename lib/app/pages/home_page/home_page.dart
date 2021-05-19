@@ -74,11 +74,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('Movere Software'),
-      //   centerTitle: true,
-
-      // ),
+      appBar: AppBar(
+        title: Text(
+          'Movere Software',
+          style: TextStyle(
+            fontSize: 25,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
+      ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () => showDialog(
